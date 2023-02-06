@@ -1,0 +1,155 @@
+---
+title: "Statistical Data"
+author: "Gretchen Ollani"
+date: "2023-02-06"
+output: html_document
+---
+```{r}
+library(readxl)
+Gretchen <- read_excel("Gretchen.xlsx")
+View(Gretchen)
+```
+
+```{r}
+# Store the data in the variable my_data
+my_data <- Gretchen
+```
+
+```{r}
+# Print the first 5 rows
+head(my_data, 5)
+```
+
+# Descriptive statistics for a single group
+
+## Measure of central tendency: mean, median, mode
+
+
+
+```{r}
+# Compute the mean value
+mean(my_data$`Age`)
+```
+
+```{r}
+# Compute the median value
+median(my_data$`Age`)
+```
+
+```{r}
+# Compute the mode
+# install.packages("modeest")
+require(modeest)
+mfv(my_data$`Age`)
+```
+
+```{r}
+# Compute the minimum value
+min(my_data$`Age`)
+```
+
+#Measure of variablity
+## Range: minimum & maximum
+
+
+```{r}
+# Compute the maximum value
+max(my_data$`Age`)
+```
+
+```{r}
+# Range
+range(my_data$`Age`)
+```
+
+
+##Interquartile range
+
+```{r}
+quantile(my_data$`Age`)
+```
+
+
+```{r}
+quantile(my_data$`Age`, seq(0, 1, 0.1))
+```
+
+
+```{r}
+IQR(my_data$`Age`)
+```
+
+##Variance and standard deviation
+
+```{r}
+# Compute the variance
+var(my_data$`Age`)
+# Compute the standard deviation =
+# square root of th variance
+sd(my_data$`Age`)
+```
+
+##Median absolute deviation
+
+```{r}
+# Compute the median
+median(my_data$`Age`)
+# Compute the median absolute deviation
+mad(my_data$`Age`)
+```
+
+```{r}
+summary(my_data$`Age`)
+```
+
+```{r}
+summary(my_data, digits = 1)
+```
+
+
+#sapply() function
+
+```{r}
+# Compute the mean of each column
+sapply(my_data[, -1], mean)
+```
+
+
+```{r}
+# Compute quartiles
+sapply(my_data[, -1], quantile)
+```
+
+```{r}
+# Compute descriptive statistics
+library(pastecs)
+res <- stat.desc(my_data[, -5])
+round(res, 2)
+```
+
+```{r}
+mean(my_data$`Age`, na.rm = TRUE)
+```
+
+#Graphical display of distributions
+
+```{r}
+library(ggpubr)
+```
+
+```{r}
+ggboxplot(my_data, y = "Age", width = 0.5)
+```
+
+```{r}
+gghistogram(my_data, x = "Shoe Size", bins = 9, 
+             add = "mean")
+```
+
+```{r}
+ggecdf(my_data, x = "Shoe Size")
+```
+
+```{r}
+ggqqplot(my_data, x = "Shoe Size")
+```
