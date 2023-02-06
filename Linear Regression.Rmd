@@ -1,0 +1,157 @@
+---
+title: "Linear Regression"
+author: "Gretchen Ollani"
+date: "2023-02-06"
+output: html_document
+---
+Loading Required R packages
+
+library(tidyverse)
+library(caret)
+theme_set(theme_bw())
+
+Preparing the data
+
+# Load the data
+data("marketing", package = "datarium")
+# Inspect the data
+sample_n(marketing, 3)
+
+# Split the data into training and test set
+set.seed(123)
+training.samples <- marketing$sales %>%
+  createDataPartition(p = 0.8, list = FALSE)
+train.data  <- marketing[training.samples, ]
+test.data <- marketing[-training.samples, ]
+
+Computing linear regression
+
+# Build the model
+model <- lm(sales ~., data = train.data)
+# Summarize the model
+summary(model)
+# Make predictions
+predictions <- model %>% predict(test.data)
+# Model performance
+# (a) Prediction error, RMSE
+RMSE(predictions, test.data$sales)
+# (b) R-square
+R2(predictions, test.data$sales)
+
+Simple linear regression
+
+model <- lm(sales ~ youtube, data = train.data)
+summary(model)$coef
+
+newdata <- data.frame(youtube = c(0,  1000))
+model %>% predict(newdata)
+
+Multiple linear regression
+
+model <- lm(sales ~ youtube + facebook + newspaper, 
+            data = train.data)
+summary(model)$coef
+
+model <- lm(sales ~., data = train.data)
+summary(model)$coef
+
+# New advertising budgets
+newdata <- data.frame(
+  youtube = 2000, facebook = 1000,
+  newspaper = 1000
+)
+# Predict sales values
+model %>% predict(newdata)
+
+Interpretation
+
+summary(model)
+
+Coefficients significance
+
+summary(model)$coef
+
+model <- lm(sales ~ youtube + facebook, data = train.data)
+summary(model)
+
+Making predictions
+
+# Make predictions
+predictions <- model %>% predict(test.data)
+# Model performance
+# (a) Compute the prediction error, RMSE
+RMSE(predictions, test.data$sales)
+
+# (b) Compute R-square
+R2(predictions, test.data$sales)
+
+Discussion
+
+ggplot(marketing, aes(x = youtube, y = sales)) +
+  geom_point() +
+  stat_smooth()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
